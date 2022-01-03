@@ -42,6 +42,11 @@ use yii\helpers\Url;
                 </article>
                 <?php endforeach; ?>
                 
+                <?php
+                echo LinkPager::widget([
+                    'pagination' => $pagination,
+                ]);
+                ?>
                 
             </div>
            <?= $this->render('/partials/sidebar',[

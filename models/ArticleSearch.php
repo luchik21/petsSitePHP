@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Article;
+use yii\data\Pagination;
 
 /**
  * ArticleSearch represents the model behind the search form of `app\models\Article`.
@@ -73,4 +74,22 @@ class ArticleSearch extends Article
 
         return $dataProvider;
     }
+
+    public static function getArticleByName($name) {
+
+        $query = Article::find()->from(['article'])->where(['like', 'title', $name]);
+
+           $count = $query->count();
+
+           $pagination = new Pagination(['totalCount' => $count, 'pageSize'=>3]);
+
+           // limit the query using the pagination and retrieve the articles
+           $articles = $query->offset($pagination->offset)
+           ->limit($pagination->limit) //limit from database
+           ->all();
+           $data['articles']=$articles;
+           $data['pagination']=$pagination;
+
+           return $data;
+        }
 }

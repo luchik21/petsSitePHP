@@ -12,6 +12,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\ArticleSearch;
 
 class SiteController extends Controller
 {
@@ -198,5 +199,22 @@ class SiteController extends Controller
                 return $this->redirect(['site/view','id'=>$id]);
             }
         }
+    }
+
+    public function actionSearch($name)
+    {
+        $data=ArticleSearch::getArticleByName($name);
+        $popular = Article::getPopular();
+        $recent = Article::getRecent();
+        $categories = Category::getAll();
+      
+        return $this->render('category',[
+            'articles'=>$data['articles'],
+            'pagination'=>$data['pagination'],
+            'popular'=>$popular,
+            'recent'=>$recent,
+            'categories'=>$categories
+
+        ]);
     }
 }
